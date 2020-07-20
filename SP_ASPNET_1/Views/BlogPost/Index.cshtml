@@ -1,0 +1,29 @@
+﻿@using SP_ASPNET_1.BusinessLogic
+@using SP_ASPNET_1.Models
+@model SP_ASPNET_1.ViewModels.BlogIndexViewModel
+
+
+@{ Layout = "~/Views/Shared/Blog/_BlogLayout.cshtml"; }
+
+@if (Model.BlogPosts != null)
+{
+    <ul class="Posts__Featured">
+        <li id="blogs">
+            @Html.Partial("~/Views/BlogPost/_IndexItemsPartial.cshtml", Model.BlogPosts)
+        </li>
+        <li>
+            <button class="c-btn" id="btnLoadMore">load more</button>
+        </li>
+
+    </ul>
+}
+else
+{
+    <h1>There are no blog posts :-(</h1>
+}
+@Scripts.Render("~/bundles/jquery")
+<script>
+    $('#btnLoadMore').click(function () {
+  $('#blogs').load('/Blog/More/');
+    });
+</script>

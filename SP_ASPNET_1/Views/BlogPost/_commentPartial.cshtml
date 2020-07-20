@@ -1,0 +1,23 @@
+﻿@model ICollection<BlogComment>
+@using Microsoft.AspNet.Identity
+@using SP_ASPNET_1.Models
+@foreach (BlogComment comment in @Model)
+{
+    <li>
+        <div class="commenterName">
+            @comment.User.UserName:
+        </div>
+        <div class="commentText">
+            <p class="">@comment.Comment</p>
+            <p style="visibility:hidden" id="commentId">@comment.ID</p>
+            <span class="date sub-text">
+                on @comment.CommentDate.ToString("MM/dd/yyyy")
+                @if (User.Identity.GetUserId() == comment.UserId)
+                {
+                    <a style="cursor:pointer" id="deleteComment" onclick="btnDeleteClick(@comment.ID)">Delete</a>
+                }
+            </span>
+
+        </div>
+    </li>
+}

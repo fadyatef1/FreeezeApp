@@ -1,0 +1,158 @@
+﻿@using SP_ASPNET_1.BusinessLogic
+@using Microsoft.AspNet.Identity
+@using SP_ASPNET_1.Models
+@model SP_ASPNET_1.ViewModels.BlogSinglePostViewModel
+
+@*@{
+        ViewBag.Title = "SinglePost";
+    }*@
+@{ Layout = "~/Views/Shared/Blog/_BlogLayout.cshtml"; }
+
+@if (Model != null)
+{
+    <div class="SinglePost">
+        <img src="@Html.AttributeEncode(Model.BlogPost.ImageUrl)" alt="@Path.GetFileNameWithoutExtension(Model.BlogPost.ImageUrl)" />
+        <h2>new chills for summer</h2>
+        <p>By @Model.Author.ToString() (@Model.AuthorAverageLikes <i class="fa fa-heart-o fa-lg"></i>) on @Model.BlogPost.DateTime.ToString(SP_ASPNET_1.BusinessLogic.Constants.DISPLAY_DATETIME_FORMAT)</p>
+        <p>
+            @Model.BlogPost.Content
+        </p>
+        <div>
+            @if (!@Model.IsLiked)
+            {
+                <i class="icon-like fa fa-heart-o fa-lg"></i>
+            }
+            else
+            {
+                <i class="icon-like fa fa-heart fa-lg"></i>
+            }
+            <strong class="likecount">@Model.LiksCount</strong>
+        </div>
+        <div class="detailBox">
+            <div class="titleBox">
+                <label>Comment Box</label>
+            </div>
+            <div class="actionBox">
+                <ul class="commentList">
+                    <li id="contributors">
+                        @Html.Partial("~/Views/BlogPost/_commentPartial.cshtml", Model.BlogComments)
+                    </li>
+                </ul>
+                <div class="form-inline" role="form">
+                    <div class="form-group">
+                        <input class="form-control" id="txtComment" type="text" placeholder="Your comments" />
+                    </div>
+                    <div class="form-group">
+                        <button class="btn btn-default" id="btnAdd">Add</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <p>
+            @Html.ActionLink("Edit", "EditBlogPost", new { id = Model.BlogPost.BlogPostID }) |
+            @Html.ActionLink("Back to List", "Index") |
+            @Html.ActionLink("Delete", "EditBlogPost", new { id = Model.BlogPost.BlogPostID }) |
+        </p>
+    </div> }
+else
+{
+    <div class="SinglePost">
+        <h2>There are no blog posts :-(</h2>
+    </div>
+}
+@Scripts.Render("~/bundles/jquery")
+<script>
+    var clicks = @Model.LiksCount;
+    $('.icon-like').click(function () {
+        if ($('.icon-like').hasClass('fa-heart-o')) {
+            $('.like-sign').fadeIn();
+ 
+            setTimeout(function () {
+                $('.like-sign').fadeOut();
+            }, 1000);
+
+            $('.icon-like').removeClass('fa-heart-o')
+                .addClass('fa-heart');
+            clicks++;
+            $('.likecount').html(clicks);
+                var blogPost = {
+                BlogPostID: @Model.BlogPost.BlogPostID,
+                UserId: '@(User.Identity.GetUserId())'
+                };
+                $.ajax({
+                    type: "POST",
+                    url: "/Like/Create",
+                    data: JSON.stringify(blogPost),
+                    contentType: 'application/json; charset=utf-8',
+                    success: function(data) {
+                        //alert(data.msg);
+                    },
+                    error: function() {
+                        alert("Error occured!!")
+                    }
+                });
+        } else {
+            $('.icon-like').addClass('fa-heart-o')
+                .removeClass('fa-heart');
+            clicks--;
+            $('.likecount').html(clicks);
+                $.ajax({
+                    type: "Get",
+                    url: "/Like/Delete/"+@Model.BlogPost.BlogPostID,
+                    success: function(data) {
+                        //alert(data.msg);
+                    },
+                    error: function (errormessage) {
+                        //alert(errormessage.responseText);
+                    }
+                });
+            return false;
+        }
+    });
+
+    $('#btnAdd').click(function () {
+        
+        var comment = $("#txtComment").val();
+        if (comment.trim() != "") {
+            var blogComment = {
+                BlogPostID: @Model.BlogPost.BlogPostID,
+                UserId: '@(User.Identity.GetUserId())',
+                Comment: comment
+
+             };
+            $.ajax({
+                 
+                type: "POST",
+                url: "/Comment/Create",
+                data: JSON.stringify(blogComment),
+                contentType: 'application/json; charset=utf-8',
+                success: function (data) {
+                    $('#txtComment').val('');
+                    $('#contributors').load('/Comment/Get/partial/' +@Model.BlogPost.BlogPostID);
+                        return false;
+                },
+                error: function () {
+                    alert("Error occured!!")
+                }
+            });
+        }
+        else {
+            return;
+        }
+    });
+
+    function btnDeleteClick(val) {
+        $.ajax({
+            type: "Get",
+            url: "/Comment/Delete/" + parseInt(val),
+            success: function (data) {
+                $('#contributors').load('/Comment/Get/partial/' +@Model.BlogPost.BlogPostID);
+                return false;
+            },
+            error: function () {
+                $('#contributors').load('/Comment/Get/partial/' +@Model.BlogPost.BlogPostID);
+            }
+        });
+    }
+
+</script>

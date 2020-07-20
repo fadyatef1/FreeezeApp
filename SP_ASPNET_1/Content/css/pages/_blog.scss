@@ -1,0 +1,168 @@
+﻿
+.Blog{
+    display: flex;
+    flex-flow: column nowrap;
+}
+
+.Blog__Posts {
+    display: flex;
+    flex-flow: row;
+    justify-content: center;
+    padding: 10px;
+}
+
+.Posts__Item {
+    display: flex;
+    flex-flow: row nowrap;
+}
+.Posts__Item__Link{
+    text-align: center;
+}
+
+.Post__Hr {
+    border: 0;
+    height: 1px;
+    background: #333;
+    background-image: linear-gradient(to right, #ccc, #333, #ccc);
+}
+
+.Posts__Featured{
+    display: flex;
+    flex-flow: column nowrap;
+    max-width: 620px;
+    list-style: none;
+    li{
+        margin-right: 10px;
+    }
+}
+.SinglePost {
+    display: flex;
+    flex-flow: column nowrap;
+    max-width: 620px;
+}
+
+.Posts__Recent {
+    width: 280px;
+    background-color: $gray;
+    display: flex;
+    align-items: center;
+    text-align: center;
+    flex-flow: column nowrap;
+
+    & > * {
+        max-width: 200px;
+    }
+
+    .Posts__Recent-title {
+        color: $magenta;
+        margin: 0;
+        padding: 42px 0 29px;
+        text-align: center;
+        text-transform: capitalize;
+        background-color: inherit;
+    }
+}
+
+.Blog__Post-Preview {
+}
+
+.Post__Image{
+    width: 200px;
+    height: 200px;
+    border-radius: 50%;
+    margin-right: 30px;
+}
+
+
+.fa-heart-o {
+    color: #242424;
+}
+
+.fa-heart {
+    color: #CE2D4F;
+}
+
+.like-sign {
+    display: none;
+    position: absolute;
+    top: 40%;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    margin: 0 auto;
+    height: 80px;
+    width: 80px;
+
+    i {
+        font-size: 80px;
+    }
+}
+
+.detailBox {
+    border: 1px solid #bbb;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.titleBox {
+    background-color: #fdfdfd;
+    padding: 10px;
+}
+
+.titleBox label {
+    color: #444;
+    margin: 0;
+    display: inline-block;
+}
+
+.commentBox .form-group:first-child, .actionBox .form-group:first-child {
+    width: 80%;
+}
+
+.commentBox .form-group:nth-child(2), .actionBox .form-group:nth-child(2) {
+    width: 18%;
+}
+
+.actionBox .form-group * {
+    width: 100%;
+}
+
+.commentList {
+    padding: 0;
+    list-style: none;
+    max-height: 200px;
+    overflow: auto;
+}
+
+.commentList li {
+    margin: 0;
+    margin-top: 10px;
+}
+
+.commentList li > div {
+    display: table-cell;
+}
+
+.commenterName {
+    width: auto;
+    margin-right: 2px;
+    height: 100%;
+    font-weight: bold;
+    float: left;
+}
+
+.commentText p {
+    margin: 0;
+    word-break: break-all;
+}
+
+.sub-text {
+    color: #aaa;
+    font-family: verdana;
+    font-size: 11px;
+}
+
+.actionBox {
+    border-top: 1px dotted #bbb;
+    padding: 10px;
+}
